@@ -15,7 +15,12 @@ app.get("/", function(req, res){
 app.post("/", function(req, res){
     const URL = req.body.url;   
     var qr_svg = qr.image(URL);
-    qr_svg.pipe(fs.createWriteStream('QR Image.png'));
+    qr_svg.pipe(fs.createWriteStream('QR_Image.png'));
+
+    res.setHeader('Content-Type', 'image/png'); // Set the content type to image/png
+    res.setHeader('Cache-Control', 'no-store'); // Add Cache-Control header to disable caching
+    qr_svg.pipe(res); // Pipe the QR code directly to the response
+
 })
 
 app.listen("3000", function(){
